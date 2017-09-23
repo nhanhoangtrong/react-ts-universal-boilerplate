@@ -1,3 +1,12 @@
+# Distribution folder
+dist
+
+# MacOS
+.DS_Store
+
+# Visual Studio Code Configurations
+.vscode
+
 # Logs
 logs
 *.log

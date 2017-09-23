@@ -96,6 +96,7 @@ module.exports = (env) => {
                         loader: 'file-loader',
                         options: {
                             name: '[path][name].[ext]',
+                            emitFile: false,
                         },
                     }],
                 },

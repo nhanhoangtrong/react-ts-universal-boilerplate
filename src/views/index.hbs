@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{title}} - React Typescript Universal Boilerplate</title>
+    {{#each cssFiles}}
+        <link rel="stylesheet" href="{{../publicPath}}{{this}}.css">
+    {{/each}}
+</head>
+<body>
+    <div id="app">{{{appHTML}}}</div>
+    <script src="{{publicPath}}vendors.client.js"></script>
+    <script src="{{publicPath}}app.client.js"></script>
+</body>
+</html>

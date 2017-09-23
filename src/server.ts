@@ -2,7 +2,7 @@ import * as express from 'express';
 import { resolve, join } from 'path';
 import * as chalk from 'chalk';
 import * as winston from 'winston';
-import * as webpack from 'webpack';
+import { mkdirSync, existsSync } from 'fs';
 
 import * as mongoose from 'mongoose';
 import { connectRedis } from './db';
@@ -23,13 +23,35 @@ const app = express();
 /**
  * Set the Express application variables
  */
-app.engine('hbs', hbs.express4({
+// Check for the views folder
+const hbsViews: {
+    [key: string]: string;
+} = {
+    baseDir: resolve(__dirname, './views'),
     partialsDir: resolve(__dirname, './views', 'partials'),
     layoutsDir: resolve(__dirname, './views', 'layouts'),
+};
+try {
+    Object.keys(hbsViews).forEach((key: string, i: number) => {
+        const dir: string = hbsViews[key];
+        if (!existsSync(dir)) {
+            mkdirSync(dir);
+        }
+    });
+} catch (err) {
+    winston.error('%s - Errors on creating views folders', chalk.red('Views'));
+    winston.error('%s - Name: %s', chalk.red('Views'), err.name);
+    winston.error('%s - Message: %s', chalk.red('Views'), err.message);
+    winston.error('%s - Stack: %s', chalk.red('Views'), err.stack);
+    process.exit(1);
+}
+app.engine('hbs', hbs.express4({
+    partialsDir: hbsViews.partialsDir,
+    layoutsDir: hbsViews.layoutsDir,
 }));
 app.set('host', process.env.HOST || 'localhost');
 app.set('port', parseInt(process.env.PORT, 10) || 3000);
-app.set('views', resolve(__dirname, './views'));
+app.set('views', hbsViews.baseDir);
 app.set('view engine', 'hbs');
 
 /**

@@ -1,0 +1,11 @@
+{
+    "exec": "ts-node src/index.server",
+    "ext": "js jsx ts tsx",
+    "watch": [
+        "src/middlewares/*",
+        "src/index.server.ts",
+        "src/server.ts",
+        "webpack/*.js",
+        ".env"
+    ]
+}

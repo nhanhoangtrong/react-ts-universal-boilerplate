@@ -40,9 +40,11 @@ try {
     });
 } catch (err) {
     winston.error('%s - Errors on creating views folders', chalk.red('Views'));
-    winston.error('%s - Name: %s', chalk.red('Views'), err.name);
-    winston.error('%s - Message: %s', chalk.red('Views'), err.message);
-    winston.error('%s - Stack: %s', chalk.red('Views'), err.stack);
+    if (err instanceof Error) {
+        winston.error('%s - Name: %s', chalk.red('Views'), err.name);
+        winston.error('%s - Message: %s', chalk.red('Views'), err.message);
+        winston.error('%s - Stack: %s', chalk.red('Views'), err.stack);
+    }
     process.exit(1);
 }
 app.engine('hbs', hbs.express4({

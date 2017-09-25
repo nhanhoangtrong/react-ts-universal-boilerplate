@@ -12,10 +12,6 @@ const defaultStyle = {
     opacity: 0,
 };
 
-interface TransitionStype<T> {
-    [key: string]: object;
-}
-
 const transitionStyles = {
     entering: { opacity: 1 },
     entered: { opacity: 1 },

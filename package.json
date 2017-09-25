@@ -16,6 +16,7 @@
     "test": "mocha"
   },
   "dependencies": {
+    "@types/isomorphic-fetch": "^0.0.34",
     "body-parser": "^1.18.1",
     "classnames": "^2.2.5",
     "cors": "^2.8.4",
@@ -24,6 +25,7 @@
     "express-hbs": "^1.0.4",
     "express-status-monitor": "^1.0.0",
     "history": "^4.7.2",
+    "isomorphic-fetch": "^2.2.1",
     "lusca": "^1.5.1",
     "mongoose": "^4.11.10",
     "morgan": "^1.8.2",
@@ -68,6 +70,7 @@
     "@types/webpack-hot-middleware": "^2.16.0",
     "@types/winston": "^2.3.5",
     "awesome-typescript-loader": "^3.2.3",
+    "babel-polyfill": "^6.26.0",
     "chai": "^4.1.2",
     "chai-http": "^3.0.0",
     "chalk": "^2.1.0",

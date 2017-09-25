@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import * as dotenv from 'dotenv';
 import * as chalk from 'chalk';
 import * as winston from 'winston';
+import 'isomorphic-fetch';
 
 // Load .env file
 dotenv.config({ path: resolve(__dirname, '../.env') });

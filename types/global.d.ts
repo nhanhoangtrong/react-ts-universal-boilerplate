@@ -16,6 +16,51 @@ declare module '*.json' {
     export = data;
 }
 
+declare module '*.jpg' {
+    const url: string;
+    export = url;
+}
+
+declare module '*.jpeg' {
+    const url: string;
+    export = url;
+}
+
+declare module '*.png' {
+    const url: string;
+    export = url;
+}
+
+declare module '*.gif' {
+    const url: string;
+    export = url;
+}
+
+declare module '*.svg' {
+    const url: string;
+    export = url;
+}
+
+declare module '*.eot' {
+    const url: string;
+    export = url;
+}
+
+declare module '*.ttf' {
+    const url: string;
+    export = url;
+}
+
+declare module '*.woff' {
+    const url: string;
+    export = url;
+}
+
+declare module '*.woff2' {
+    const url: string;
+    export = url;
+}
+
 // Global setInterval for web
 declare function setInterval(callback: (...args: any[]) => void, ms: number, ...args: any[]): number;
 

@@ -4,9 +4,9 @@ import todos from './todos';
 import globals from './globals';
 
 export interface RootState {
-    todos: TodoStoreState;
-    globals: GlobalStoreState;
-    router: RouterState;
+    todos?: TodoStoreState;
+    globals?: GlobalStoreState;
+    router?: RouterState;
 }
 
 export default combineReducers<RootState>({

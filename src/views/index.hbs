@@ -11,6 +11,11 @@
 </head>
 <body>
     <div id="app">{{{appHTML}}}</div>
+    {{#if preloadedState}}
+    <script>
+        window.__PRELOADEDSTATE__ = {{{ preloadedState }}};
+    </script>
+    {{/if}}
     <script src="{{publicPath}}vendors.client.js"></script>
     <script src="{{publicPath}}app.client.js"></script>
 </body>

@@ -2,11 +2,11 @@ import { handleActions } from 'redux-actions';
 import { v1 as uuidv1 } from 'uuid';
 import * as ActionTypes from '../types';
 
-// const initialState: TodoItemData[] = [{
-//     id: uuidv1(),
-//     text: 'Default todo again',
-//     completed: false,
-// }];
+const initialState: TodoItemData[] = [{
+    id: uuidv1(),
+    text: 'Default todo again',
+    completed: false,
+}];
 
 export default handleActions<TodoStoreState, TodoItemData>({
     [ActionTypes.ADD_TODO]: (state, action) => {
@@ -50,4 +50,4 @@ export default handleActions<TodoStoreState, TodoItemData>({
     [ActionTypes.CLEAR_COMPLETED]: (state, action) => {
         return state.filter((todo) => todo.completed === false);
     },
-}, []);
+}, initialState);

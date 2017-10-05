@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router';
 import Home from './routes/Home';
 import { configureStore, RootState } from './redux';
+import { createMemoryHistory } from 'history';
 
 const preloadedState: RootState = {
     globals: {
@@ -16,11 +17,14 @@ const preloadedState: RootState = {
         completed: false,
     }],
 };
-const store = configureStore(preloadedState);
 
 export default (app: Application, publicPath: string) => {
     app.get('*', (req, res, next) => {
+        const memoryHistory = createMemoryHistory({
+            initialEntries: [req.path],
+        });
         const context = {};
+        const store = configureStore(memoryHistory, preloadedState);
         const appHTML = renderToString(
             <Provider store={store}>
                 <StaticRouter

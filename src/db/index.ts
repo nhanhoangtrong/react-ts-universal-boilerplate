@@ -1,4 +1,5 @@
 import * as redis from 'redis';
+import * as mongoose from 'mongoose';
 import * as winston from 'winston';
 import * as chalk from 'chalk';
 
@@ -11,5 +12,16 @@ export const connectRedis = (cb: (err?: Error, client?: redis.RedisClient) => vo
     });
     redisClient.on('ready', () => {
         cb(null, redisClient);
+    });
+};
+
+export const connectMongoDB = (connectString: string, cb: (err?: Error) => void) => {
+    mongoose.connect(connectString, {
+        useMongoClient: true,
+    }, (err: Error) => {
+        if (err) {
+            return cb(err);
+        }
+        return cb();
     });
 };

@@ -5,7 +5,7 @@ import * as winston from 'winston';
 import { mkdirSync, existsSync } from 'fs';
 
 import * as mongoose from 'mongoose';
-import { connectRedis } from './db';
+import { connectRedis, connectMongoDB } from './db';
 
 import * as morgan from 'morgan';
 import * as statusMonitor from 'express-status-monitor';
@@ -59,15 +59,15 @@ app.set('view engine', 'hbs');
 /**
  * Then configurating and connecting to the MongoDB with Mongoose
  */
-// mongoose.connect(process.env.MONGODB_CONNECT_URI, {
-//     useMongoClient: true,
-// });
-// mongoose.connection.on('error', (err) => {
-//     winston.error(err);
-//     winston.info('%s - MongoDB connection error. Please make sure MongoDB is running.', chalk.red('Error'));
-//     process.exit(1);
-// });
-connectRedis((err) => {
+connectMongoDB(process.env.MONGODB_CONNECT_URI, (err: Error) => {
+    if (err) {
+        winston.error(err.message);
+        winston.info('%s - MongoDB connection error. Please make sure MongoDB is running.', chalk.red('Error'));
+        process.exit(1);
+    }
+    winston.info('%s - MongoDB client is ready.', chalk.green('MongoDB'));
+});
+connectRedis((err, redisClient) => {
     if (err) {
         console.error(err);
         winston.info('%s - Please make sure Redis is running.', chalk.red('Redis connection error'));
@@ -98,5 +98,33 @@ if (isProduction) {
         });
     });
 }
+
+// Error loggin handler
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (isProduction) {
+        delete err.stack;
+    }
+    winston.error(err.message);
+    winston.error(err.stack);
+
+    next(err);
+});
+// AJAX error handler
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    // Checking for XHR request header
+    if (req.xhr) {
+        return res.status(500).send({
+            message: err.message,
+        });
+    }
+    return next(err);
+});
+// Default error handler
+app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if (res.headersSent) {
+        return next(err);
+    }
+    return res.sendStatus(500);
+});
 
 export default app;

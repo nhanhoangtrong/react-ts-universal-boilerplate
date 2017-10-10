@@ -4,8 +4,8 @@ import todos from './todos';
 import globals from './globals';
 
 export interface RootState {
-    todos?: TodoStoreState;
-    globals?: GlobalStoreState;
+    todos?: TodoItemState;
+    globals?: GlobalState;
     router?: RouterState;
 }
 

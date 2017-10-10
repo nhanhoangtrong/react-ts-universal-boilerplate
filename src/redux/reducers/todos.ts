@@ -2,13 +2,14 @@ import { handleActions } from 'redux-actions';
 import { v1 as uuidv1 } from 'uuid';
 import * as ActionTypes from '../types';
 
-const initialState: TodoItemData[] = [{
+const initialState: TodoItemState = [{
     id: uuidv1(),
     text: 'Default todo again',
     completed: false,
+    owner: '',
 }];
 
-export default handleActions<TodoStoreState, TodoItemData>({
+export default handleActions<TodoItemState, ITodoItem>({
     [ActionTypes.ADD_TODO]: (state, action) => {
         return [{
             id: uuidv1(),
@@ -18,7 +19,7 @@ export default handleActions<TodoStoreState, TodoItemData>({
     },
 
     [ActionTypes.DELETE_TODO]: (state, action) => {
-        return state.filter((todo: TodoItemData) => todo.id !== action.payload);
+        return state.filter((todo: ITodoItem) => todo.id !== action.payload);
     },
 
     [ActionTypes.EDIT_TODO]: (state, action) => {

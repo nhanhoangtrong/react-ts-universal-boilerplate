@@ -10,7 +10,7 @@ import * as TodosActions from '../redux/actions/todos';
 export interface TodoAppContainerStateProps extends React.Props<any> {
     filter: TodoFilterType;
     isLoading: boolean;
-    todos: TodoItemData[];
+    todos: ITodoItem[];
 }
 
 export interface TodoAppContainerDispatchProps extends React.Props<any> {

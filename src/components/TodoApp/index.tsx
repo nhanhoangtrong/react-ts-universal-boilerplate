@@ -13,7 +13,7 @@ export interface TodoAppProps extends RouteComponentProps<any> {
     filter: TodoFilterType;
     globalsActions: any;
     todosActions: any;
-    todos: TodoItemData[];
+    todos: ITodoItem[];
 }
 
 export default class TodoApp extends React.Component<TodoAppProps> {

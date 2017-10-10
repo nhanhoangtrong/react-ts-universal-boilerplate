@@ -3,6 +3,8 @@
     "ext": "js jsx ts tsx",
     "watch": [
         "src/middlewares/*",
+        "src/db/*",
+        "src/controllers/*",
         "src/index.server.ts",
         "src/server.ts",
         "webpack/*.js",

@@ -10,10 +10,15 @@ import { connectRedis, connectMongoDB } from './db';
 import * as morgan from 'morgan';
 import * as statusMonitor from 'express-status-monitor';
 import * as hbs from 'express-hbs';
+import * as bodyParser from 'body-parser';
+import * as passport from 'passport';
 
 import { staticMiddleware } from './middlewares';
 
+import { localStrategy, bearerStrategy } from './middlewares/passport';
+
 import apiRoute from './controllers/api';
+import authRoute from './controllers/auth';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -79,11 +84,21 @@ connectRedis((err, redisClient) => {
 app.use(morgan(isProduction ? 'combined' : 'dev'));
 app.use(statusMonitor());
 
+// Body Parser middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Initialize passport
+app.use(passport.initialize());
+passport.use('local', localStrategy);
+passport.use('bearer', bearerStrategy);
+
 // Register specific middlewares
 const publicPath = process.env.PUBLIC_PATH || '/assets';
 staticMiddleware(app, publicPath, join(__dirname, publicPath));
 
 // Register routes
+app.use('/auth', authRoute);
 app.use('/api', apiRoute);
 
 /* tslint:disable:no-var-requires */

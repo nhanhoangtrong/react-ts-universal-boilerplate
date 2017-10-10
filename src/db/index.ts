@@ -3,6 +3,10 @@ import * as mongoose from 'mongoose';
 import * as winston from 'winston';
 import * as chalk from 'chalk';
 
+import UserModel from './models/User';
+import UserRoleModel from './models/UserRole';
+import TodoItemModel from './models/TodoItem';
+
 export let redisClient: redis.RedisClient;
 
 export const connectRedis = (cb: (err?: Error, client?: redis.RedisClient) => void) => {
@@ -25,3 +29,9 @@ export const connectMongoDB = (connectString: string, cb: (err?: Error) => void)
         return cb();
     });
 };
+
+// Exporting models
+/* tslint:disable:no-var-requires */
+export const User = UserModel;
+export const UserRole = UserRoleModel;
+export const TodoItem = TodoItemModel;

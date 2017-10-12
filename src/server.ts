@@ -114,7 +114,7 @@ if (isProduction) {
     });
 }
 
-// Error loggin handler
+// Error logging handler
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
     if (isProduction) {
         delete err.stack;
@@ -124,22 +124,29 @@ app.use((err: Error, req: express.Request, res: express.Response, next: express.
 
     next(err);
 });
-// AJAX error handler
+// Default error handler status check
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-    // Checking for XHR request header
-    if (req.xhr) {
-        return res.status(500).send({
-            message: err.message,
-        });
+
+    // Check if error statusCode has been set or not
+    if (res.statusCode === 200) {
+        // If not, set default status is Internal Server Error
+        res.statusCode = 500;
     }
+
     return next(err);
 });
 // Default error handler
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    // Check if headers is sent
     if (res.headersSent) {
         return next(err);
     }
-    return res.sendStatus(500);
+
+    // Check if AJAX request, send the json error
+    if (req.xhr) {
+        return res.json(err);
+    }
+    return res.send(JSON.stringify(err));
 });
 
 export default app;

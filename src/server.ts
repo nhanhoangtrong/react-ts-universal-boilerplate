@@ -106,7 +106,7 @@ app.use('/api', apiRoute);
 app.use('/graphql', bodyParser.text({
     type: 'application/graphql',
 }), graphqlRoute);
-if (!isProduction) {
+if (isDev) {
     // Enable graphiql on development
     app.use('/graphiql', graphiqlExpress({
         endpointURL: '/graphql',

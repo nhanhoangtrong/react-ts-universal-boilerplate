@@ -1,5 +1,5 @@
 import { buildSchema, GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLNonNull, GraphQLID } from 'graphql';
-import User from '../models/User';
+import User from '../mongo/User';
 import { TodoItemType } from './TodoType';
 import { UserType } from './UserType';
 

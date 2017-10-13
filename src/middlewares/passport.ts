@@ -7,7 +7,7 @@ import { User } from '../db';
 const jwtSecret = process.env.JWT_SECRET || 'My JWT Secret';
 
 export class LocalAuthenticationError extends Error {
-    fields: any;
+    public fields: any;
     constructor(...args: any[]) {
         super(...args);
         this.name = 'LocalAuthentication';

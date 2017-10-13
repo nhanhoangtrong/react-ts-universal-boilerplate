@@ -7,11 +7,11 @@ export interface RedirectWithStatusProps {
     status?: number;
 }
 
-export default ({ from, to, status }: RedirectWithStatusProps ) => (
+export default ({ from, to, status }: RedirectWithStatusProps) => (
     <Route render={ ({ staticContext }) => {
         if (staticContext) {
             staticContext.status = status;
         }
-        return <Redirect from={from} to={to} />
+        return <Redirect from={from} to={to} />;
     }} />
 );

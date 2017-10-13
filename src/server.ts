@@ -66,7 +66,7 @@ app.set('view engine', 'hbs');
 /**
  * Then configurating and connecting to the MongoDB with Mongoose
  */
-(<any>mongoose).Promise = global.Promise;
+(mongoose as any).Promise = global.Promise;
 connectMongoDB(process.env.MONGODB_CONNECT_URI, (err: Error) => {
     if (err) {
         winston.error(err.message);

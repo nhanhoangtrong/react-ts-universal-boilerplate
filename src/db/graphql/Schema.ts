@@ -68,7 +68,7 @@ export const getProjection = (fieldASTs: any) => {
         projections[selection.name.value] = true;
         return projections;
     }, {});
-}
+};
 
 export const schema = new GraphQLSchema({
     query: new GraphQLObjectType({
@@ -85,4 +85,3 @@ export const schema = new GraphQLSchema({
         },
     }),
 });
-

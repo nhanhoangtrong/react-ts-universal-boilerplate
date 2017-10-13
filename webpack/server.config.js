@@ -85,7 +85,7 @@ module.exports = (env) => {
                                 importLoaders: 1,
                                 localIdentName: '[local]_[name]',
                                 minimize: !isDev,
-                            }
+                            },
                         },
                         'stylus-loader',
                     ],

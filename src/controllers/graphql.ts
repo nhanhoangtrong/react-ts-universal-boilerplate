@@ -15,7 +15,7 @@ route.use((req, res, next) => {
 });
 
 route.use(graphqlExpress({
-    schema: schema,
+    schema,
     debug: process.env.NODE_ENV !== 'production',
 }));
 

@@ -1,5 +1,7 @@
-import { Schema, model, Document } from 'mongoose';
+import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
+
+const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
     firstName: {
@@ -28,7 +30,7 @@ const userSchema = new Schema({
     timestamps: true,
 });
 
-export interface UserDocument extends IUser, Document {
+export interface UserDocument extends IUser, mongoose.Document {
     email: string;
     password: string;
     role: string;
@@ -72,4 +74,4 @@ userSchema.virtual('fullName').get(function() {
 /**
  * Finally, creating User model from defined schema and exporting as default
  */
-export default model<UserDocument>('User', userSchema);
+export default mongoose.model<UserDocument>('User', userSchema);

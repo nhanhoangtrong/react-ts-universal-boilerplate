@@ -1,4 +1,6 @@
-import { Schema, model, Document } from 'mongoose';
+import * as mongoose from 'mongoose';
+
+const Schema = mongoose.Schema;
 
 const userRoleSchema = new Schema({
     role: {
@@ -6,11 +8,15 @@ const userRoleSchema = new Schema({
         required: true,
         unique: true,
     },
+    level: {
+        type: Number,
+        unique: true,
+    },
     name: String,
     description: String,
 });
 
-export interface UserRoleDocument extends IUserRole, Document {
+export interface UserRoleDocument extends IUserRole, mongoose.Document {
 }
 
-export default model<UserRoleDocument>('UserRole', userRoleSchema);
+export default mongoose.model<UserRoleDocument>('UserRole', userRoleSchema);

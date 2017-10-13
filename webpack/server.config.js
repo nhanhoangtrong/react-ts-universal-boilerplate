@@ -9,9 +9,9 @@ dotenv.config({
 });
 
 module.exports = (env) => {
-    const isProduction = env.production === 'true' || process.env.NODE_ENV === 'production';
+    const isDev = (env && env.production === 'false') || process.env.NODE_ENV === 'development';
     const buildPath = resolve(__dirname, '../dist');
-    const publicPath = env.publicPath || process.env.PUBLIC_PATH;
+    const publicPath = (env && env.publicPath) || process.env.PUBLIC_PATH;
     return {
         name: 'server',
         target: 'node',
@@ -84,7 +84,7 @@ module.exports = (env) => {
                                 modules: true,
                                 importLoaders: 1,
                                 localIdentName: '[local]_[name]',
-                                minimize: isProduction,
+                                minimize: !isDev,
                             }
                         },
                         'stylus-loader',
@@ -105,8 +105,8 @@ module.exports = (env) => {
         plugins: [
             new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
             new webpack.DefinePlugin({
-                'process.env.NODE_ENV': JSON.stringify(isProduction ? 'production' : 'development'),
-                __DEV__: !isProduction,
+                'process.env.NODE_ENV': JSON.stringify(isDev ? 'development' : 'production'),
+                __DEV__: isDev,
             }),
             new CopyPlugin([
                 {

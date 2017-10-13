@@ -10,31 +10,31 @@ dotenv.config({
 });
 
 module.exports = (env) => {
-    const isProduction = env.production === 'true' || process.env.NODE_ENV === 'production';
-    const publicPath = env.publicPath || process.env.PUBLIC_PATH || '/';
+    const isDev = (env && env.production === 'false') || process.env.NODE_ENV === 'development';
+    const publicPath = (env && env.publicPath) || process.env.PUBLIC_PATH || '/';
 
     const sourcePath = resolve(__dirname, '../src');
     const buildPath = resolve(__dirname, '../dist');
 
     const extractCSSTextPlugin = new ExtractTextPlugin({
         filename: 'vendors.css',
-        disable: !isProduction,
+        disable: isDev,
         ignoreOrder: true,
     });
     const extractStylusTextPlugin = new ExtractTextPlugin({
         filename: 'style.css',
-        disable: !isProduction,
+        disable: isDev,
         ignoreOrder: true,
     });
 
     const defaultConfig = {
         entry: {
-            app: isProduction ? './index.client.ts' : [
+            app: isDev ? [
                 'react-hot-loader/patch',
                 'webpack/hot/dev-server',
                 'webpack-hot-middleware/client?reload=true&noInfo=true',
                 './index.client.ts',
-            ],
+            ] : './index.client.ts',
             vendors: [
                 'react',
                 'react-dom',
@@ -43,7 +43,7 @@ module.exports = (env) => {
                 'react-router',
             ],
         },
-        devtool: isProduction ? 'source-map' : 'eval-source-map',
+        devtool: isDev ? 'eval-source-map' : 'source-map',
         context: sourcePath,
         target: 'web',
         resolve: {
@@ -63,12 +63,7 @@ module.exports = (env) => {
             rules: [
                 {
                     test: /\.tsx?$/,
-                    use: isProduction ? [{
-                        loader: 'awesome-typescript-loader',
-                        options: {
-                            module: 'es6',
-                        },
-                    }] : [
+                    use: isDev ? [
                         'react-hot-loader/webpack',
                         {
                             loader: 'awesome-typescript-loader',
@@ -76,7 +71,12 @@ module.exports = (env) => {
                                 module: 'es6',
                             },
                         },
-                    ],
+                    ] : [{
+                        loader: 'awesome-typescript-loader',
+                        options: {
+                            module: 'es6',
+                        },
+                    }],
                 },
                 {
                     enforce: 'pre',
@@ -104,7 +104,7 @@ module.exports = (env) => {
                                     modules: true,
                                     sourceMap: true,
                                     importLoaders: 1,
-                                    minimize: isProduction,
+                                    minimize: !isDev,
                                 },
                             },
                             'stylus-loader',
@@ -120,7 +120,7 @@ module.exports = (env) => {
                                 loader: 'css-loader',
                                 options: {
                                     importLoaders: 1,
-                                    minimize: isProduction,
+                                    minimize: !isDev,
                                 },
                             },
                         ],
@@ -141,8 +141,8 @@ module.exports = (env) => {
 
     const plugins = [
         new webpack.DefinePlugin({
-            "process.env.NODE_ENV": JSON.stringify(isProduction ? 'production' : 'development'),
-            __DEV__: !isProduction,
+            "process.env.NODE_ENV": JSON.stringify(isDev ? 'development' : 'production'),
+            __DEV__: isDev,
         }),
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendors',
@@ -153,7 +153,7 @@ module.exports = (env) => {
         extractStylusTextPlugin,
     ];
 
-    if (!isProduction) {
+    if (isDev) {
         plugins.push(
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NamedModulesPlugin(),

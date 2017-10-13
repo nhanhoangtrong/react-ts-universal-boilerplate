@@ -13,6 +13,8 @@ declare interface IUser {
     lastName?: string;
     fullName?: string;
     email?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 declare interface IUserRole {

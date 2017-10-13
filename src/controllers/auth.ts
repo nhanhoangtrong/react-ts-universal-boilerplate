@@ -9,7 +9,7 @@ import { jwtSign, LocalAuthenticationError } from '../middlewares/passport';
 const route = express.Router();
 
 export class PayloadValidationError extends Error {
-    fields: any;
+    public fields: any;
     constructor(...args: any[]) {
         super(...args);
         this.name = 'PayloadValidation';

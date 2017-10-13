@@ -24,6 +24,9 @@
         ],
         "no-submodule-imports": [
             false
+        ],
+        "max-classes-per-file": [
+            false
         ]
     },
     "rules": {
@@ -46,6 +49,9 @@
             false
         ],
         "no-submodule-imports": [
+            false
+        ],
+        "max-classes-per-file": [
             false
         ]
     },

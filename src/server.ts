@@ -22,7 +22,7 @@ import apiRoute from './controllers/api';
 import authRoute from './controllers/auth';
 import graphqlRoute from './controllers/graphql';
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isDev = process.env.NODE_ENV === 'development';
 
 // Create a new Express application
 const app = express();
@@ -84,7 +84,7 @@ connectRedis((err, redisClient) => {
     winston.info('%s - Redis client is ready.', chalk.green('Redis'));
 });
 
-app.use(morgan(isProduction ? 'combined' : 'dev'));
+app.use(morgan(isDev ? 'dev' : 'combined'));
 app.use(statusMonitor());
 
 // Body Parser middleware
@@ -114,7 +114,7 @@ if (!isProduction) {
 }
 
 /* tslint:disable:no-var-requires */
-if (isProduction) {
+if (!isDev) {
     const serverRendering = require('./serverRendering').default;
     serverRendering(app, publicPath);
 } else {
@@ -128,7 +128,7 @@ if (isProduction) {
 
 // Error logging handler
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-    if (isProduction) {
+    if (!isDev) {
         delete err.stack;
     }
     winston.error(err.message);

@@ -1,6 +1,8 @@
-import { Schema, model, Document } from 'mongoose';
+import * as mongoose from 'mongoose';
 
-export interface TodoItemDocument extends ITodoItem, Document {
+const Schema = mongoose.Schema;
+
+export interface TodoItemDocument extends ITodoItem, mongoose.Document {
 }
 
 const todoItemSchema = new Schema({
@@ -29,4 +31,4 @@ const todoItemSchema = new Schema({
     _id: false,
 });
 
-export default model<TodoItemDocument>('TodoItem', todoItemSchema);
+export default mongoose.model<TodoItemDocument>('TodoItem', todoItemSchema);

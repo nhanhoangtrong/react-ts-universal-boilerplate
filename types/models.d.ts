@@ -19,6 +19,7 @@ declare interface IUser {
 
 declare interface IUserRole {
     role?: string;
+    level?: number;
     name?: string;
     description?: string;
 }

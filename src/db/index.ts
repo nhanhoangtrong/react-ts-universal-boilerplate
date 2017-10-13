@@ -3,9 +3,9 @@ import * as mongoose from 'mongoose';
 import * as winston from 'winston';
 import * as chalk from 'chalk';
 
-import UserModel from './models/User';
-import UserRoleModel from './models/UserRole';
-import TodoItemModel from './models/TodoItem';
+import UserModel from './mongo/User';
+import UserRoleModel from './mongo/UserRole';
+import TodoItemModel from './mongo/TodoItem';
 
 export let redisClient: redis.RedisClient;
 

@@ -16,6 +16,7 @@
     "test": "mocha"
   },
   "dependencies": {
+    "apollo-server-express": "^1.1.6",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "classnames": "^2.2.5",
@@ -24,6 +25,7 @@
     "express": "^4.15.4",
     "express-hbs": "^1.0.4",
     "express-status-monitor": "^1.0.0",
+    "graphql": "^0.11.7",
     "history": "^4.7.2",
     "isomorphic-fetch": "^2.2.1",
     "jsonwebtoken": "^8.0.1",
@@ -56,6 +58,7 @@
     "@types/classnames": "^2.2.3",
     "@types/dotenv": "^4.0.1",
     "@types/express": "^4.0.37",
+    "@types/graphql": "^0.11.5",
     "@types/history": "^4.6.0",
     "@types/isomorphic-fetch": "^0.0.34",
     "@types/jsonwebtoken": "^7.2.3",

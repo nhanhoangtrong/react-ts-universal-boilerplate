@@ -12,6 +12,7 @@ import * as statusMonitor from 'express-status-monitor';
 import * as hbs from 'express-hbs';
 import * as bodyParser from 'body-parser';
 import * as passport from 'passport';
+import { graphiqlExpress } from 'apollo-server-express';
 
 import { staticMiddleware } from './middlewares';
 
@@ -19,6 +20,7 @@ import { localStrategy, bearerStrategy } from './middlewares/passport';
 
 import apiRoute from './controllers/api';
 import authRoute from './controllers/auth';
+import graphqlRoute from './controllers/graphql';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -64,6 +66,7 @@ app.set('view engine', 'hbs');
 /**
  * Then configurating and connecting to the MongoDB with Mongoose
  */
+(<any>mongoose).Promise = global.Promise;
 connectMongoDB(process.env.MONGODB_CONNECT_URI, (err: Error) => {
     if (err) {
         winston.error(err.message);
@@ -100,6 +103,15 @@ staticMiddleware(app, publicPath, join(__dirname, publicPath));
 // Register routes
 app.use('/auth', authRoute);
 app.use('/api', apiRoute);
+app.use('/graphql', bodyParser.text({
+    type: 'application/graphql',
+}), graphqlRoute);
+if (!isProduction) {
+    // Enable graphiql on development
+    app.use('/graphiql', graphiqlExpress({
+        endpointURL: '/graphql',
+    }));
+}
 
 /* tslint:disable:no-var-requires */
 if (isProduction) {

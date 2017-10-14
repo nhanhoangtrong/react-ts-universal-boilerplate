@@ -13,7 +13,7 @@ export const UserType = new GraphQLObjectType({
             description: 'The first name',
         },
         lastName: {
-            type: GraphQLBoolean,
+            type: GraphQLString,
             description: 'The last name',
         },
         email: {

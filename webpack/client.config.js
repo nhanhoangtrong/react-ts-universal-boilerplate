@@ -9,9 +9,9 @@ dotenv.config({
     path: resolve(__dirname, '../.env'),
 });
 
-module.exports = (env) => {
-    const isDev = (env && env.production === 'false') || process.env.NODE_ENV === 'development';
-    const publicPath = (env && env.publicPath) || process.env.PUBLIC_PATH || '/';
+module.exports = (env = {}) => {
+    const isDev = env.production === 'false' || process.env.NODE_ENV === 'development';
+    const publicPath = env.publicPath || process.env.PUBLIC_PATH || '/';
 
     const sourcePath = resolve(__dirname, '../src');
     const buildPath = resolve(__dirname, '../dist');

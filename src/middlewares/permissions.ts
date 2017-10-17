@@ -1,6 +1,5 @@
 import * as express from 'express';
 import * as passport from 'passport';
-import * as _ from 'lodash';
 import { JsonWebTokenError, TokenExpiredError, NotBeforeError } from 'jsonwebtoken';
 import { BearerAuthenticationError } from './passport';
 

@@ -98,7 +98,8 @@ export const jwtSign = (req: express.Request, res: express.Response, next: expre
     return jwt.sign({
         sub: user._id,
         name: user.fullName,
-        role: user.role,
+        scope: `${user.role}`,
+        admin: user.isAdmin,
     }, jwtSecret, (signErr: Error, token: string) => {
 
         // Check for JWT sign errors
@@ -106,12 +107,10 @@ export const jwtSign = (req: express.Request, res: express.Response, next: expre
             return next(signErr);
         }
 
-        // Re-assign req user value
+        // Re-assign req user value for next
         req.user = {
-            _id: user._id,
             firstName: user.firstName,
             lastName: user.lastName,
-            role: user.role,
             token,
         };
 

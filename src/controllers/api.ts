@@ -1,20 +1,20 @@
 import * as express from 'express';
 import * as passport from 'passport';
 import { TokenExpiredError, NotBeforeError, JsonWebTokenError } from 'jsonwebtoken';
-import { permission, NotHavePermissionError } from '../middlewares/permission';
+import { checkPermissions, NotHavePermissionError } from '../middlewares/permissions';
 import { BearerAuthenticationError } from '../middlewares/passport';
 
 const route = express.Router();
 
 route.use(passport.authenticate('bearer', { session: false, failWithError: true }));
 
-route.get('/author', permission('author'), (req, res, next) => {
+route.get('/author', checkPermissions('author'), (req, res, next) => {
     // Send a secret message include decoded user
     return res.json({
         message: 'This is a secret!',
         name: req.user.name,
     });
-}).get('/guest', permission('guest'), (req, res, next) => {
+}).get('/guest', checkPermissions('guest'), (req, res, next) => {
     return res.json({
         message: 'This is for guest',
         name: req.user.name,

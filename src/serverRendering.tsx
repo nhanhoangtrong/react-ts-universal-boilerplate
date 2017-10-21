@@ -41,7 +41,8 @@ export default (app: Application, publicPath: string) => {
             cssFiles: [
                 'style',
             ],
-            preloadedState: preloadedState ? JSON.stringify(preloadedState) : null,
+            // Replace '<' by equivalent Unicode for prevent script attacks
+            preloadedState: preloadedState ? JSON.stringify(preloadedState).replace(/</g, '\\u003c') : null,
         });
     });
 };

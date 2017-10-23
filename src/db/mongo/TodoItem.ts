@@ -28,7 +28,6 @@ const todoItemSchema = new Schema({
     },
 }, {
     timestamps: true,
-    _id: false,
 });
 
 export default mongoose.model<TodoItemDocument>('TodoItem', todoItemSchema);

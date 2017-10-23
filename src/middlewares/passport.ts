@@ -81,6 +81,7 @@ export const localStrategy = new passportLocal.Strategy({
                     firstName: user.firstName,
                     lastName: user.lastName,
                     role: user.role,
+                    isAdmin: user.isAdmin,
                     token,
                 };
                 return done(null, userData);
@@ -97,7 +98,7 @@ export const jwtSign = (req: express.Request, res: express.Response, next: expre
     }
     return jwt.sign({
         sub: user._id,
-        name: user.fullName,
+        name: `${user.firstName} ${user.lastName}`,
         scope: `${user.role}`,
         admin: user.isAdmin,
     }, jwtSecret, (signErr: Error, token: string) => {
@@ -109,8 +110,6 @@ export const jwtSign = (req: express.Request, res: express.Response, next: expre
 
         // Re-assign req user value for next
         req.user = {
-            firstName: user.firstName,
-            lastName: user.lastName,
             token,
         };
 

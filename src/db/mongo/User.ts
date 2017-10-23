@@ -38,6 +38,7 @@ export interface UserDocument extends IUser, mongoose.Document {
     email: string;
     password: string;
     role: string;
+    isAdmin: boolean;
     comparePassword?: (candidatePassword: string, cb: (err: Error, matched: boolean) => void) => void;
 }
 

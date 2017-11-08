@@ -92,6 +92,9 @@ module.exports = (env = {}) => {
                     enforce: 'pre',
                     test: /\.js$/,
                     use: [ 'source-map-loader' ],
+                    exclude: [
+                        /node_modules/,
+                    ],
                 },
                 {
                     test: /\.styl$/,

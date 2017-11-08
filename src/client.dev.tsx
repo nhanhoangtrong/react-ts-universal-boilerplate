@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import App, { AppRootComponent } from './components/App';
-import { configureStore } from './redux';
+import { configureStore, apolloClient } from './redux';
 import { createBrowserHistory } from 'history';
 
 const history = createBrowserHistory();
@@ -11,7 +11,7 @@ const store = configureStore(history);
 const renderDOM = (AppComponent: AppRootComponent) => {
     render(
         <AppContainer>
-            <AppComponent store={store} history={history}/>
+            <AppComponent store={store} history={history} client={apolloClient}/>
         </AppContainer>, document.getElementById('app'));
 };
 

@@ -71,6 +71,7 @@ declare const __DEV__: boolean;
 declare interface Window {
     __REDUX_DEVTOOLS_EXTENSION__?(): (args?: any) => any;
     __PRELOADEDSTATE__?: any;
+    __APOLLO_STATE__?: any;
 }
 
 declare module 'express-status-monitor' {
@@ -80,4 +81,9 @@ declare module 'express-status-monitor' {
 
 declare module 'express-hbs' {
     export const express4: (options?: any) => any;
+}
+
+declare module 'lodash.flowright' {
+    const flowright: any;
+    export = flowright;
 }

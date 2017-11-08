@@ -1,6 +1,8 @@
 import * as express from 'express';
 import { graphqlExpress } from 'apollo-server-express';
-import { schema } from '../db/graphql/Schema';
+import * as passport from 'passport';
+import { checkPermissions } from '../middlewares/permissions';
+import { schema } from '../db/graphql';
 
 const route = express.Router();
 
@@ -13,10 +15,14 @@ route.use((req, res, next) => {
     }
     next();
 });
-
-route.use(graphqlExpress({
+route.use(passport.authenticate('bearer', { session: false, failWithError: true }));
+route.use(graphqlExpress((req, res) => ({
     schema,
-    debug: process.env.NODE_ENV !== 'production',
-}));
+    context: {
+        user: req.user,
+    },
+    tracing: process.env.NODE_ENV === 'development',
+    debug: process.env.NODE_ENV === 'development',
+})));
 
 export default route;

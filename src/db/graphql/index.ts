@@ -1,7 +1,7 @@
-import { buildSchema, GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLNonNull, GraphQLID } from 'graphql';
+import { buildSchema, GraphQLSchema, GraphQLObjectType, GraphQLList, GraphQLNonNull, GraphQLID, GraphQLString, GraphQLBoolean, GraphQLScalarType } from 'graphql';
 import User from '../mongo/User';
-import { TodoItemType } from './TodoType';
-import { UserType } from './UserType';
+import { userType, userQueryType, userMutationType } from './UserType';
+import { todoItemType, todoItemQueryType, todoItemMutationType } from './TodoType';
 
 // export const schema = buildSchema(`
 //     type TodoItem {
@@ -58,29 +58,38 @@ import { UserType } from './UserType';
 //     }
 // };
 
-/**
- * generate projection object for mongoose
- * @param  {Object} fieldASTs
- * @return {Project}
- */
-export const getProjection = (fieldASTs: any) => {
-    return fieldASTs.fieldNodes[0].selectionSet.selections.reduce((projections: any, selection: any) => {
-        projections[selection.name.value] = true;
-        return projections;
-    }, {});
-};
+const DateType = new GraphQLScalarType({
+    name: "date",
+    serialize: (value: Date) => {
+        return value.toUTCString();
+    },
+});
 
 export const schema = new GraphQLSchema({
     query: new GraphQLObjectType({
         name: 'RootQueryType',
+        description: 'The root query type of GraphQL route.',
+        fields: () => ({
+            users: {
+                type: userQueryType,
+                resolve: () => userQueryType,
+            },
+            todos: {
+                type: todoItemQueryType,
+                resolve: () => todoItemQueryType,
+            },
+        }),
+    }),
+    mutation: new GraphQLObjectType({
+        name: 'RootMutationType',
         fields: {
             users: {
-                type: new GraphQLList(UserType),
-                resolve: (root, { userId }, context, info) => {
-                    return new Promise((resolve, reject) => {
-                        User.find({}, getProjection(info), (err, users) => err ? reject(err) : resolve(users));
-                    });
-                },
+                type: userMutationType,
+                resolve: () => userMutationType,
+            },
+            todos: {
+                type: todoItemMutationType,
+                resolve: () => todoItemMutationType,
             },
         },
     }),

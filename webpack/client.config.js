@@ -29,6 +29,7 @@ module.exports = (env = {}) => {
     });
 
     const defaultConfig = {
+        mode: isDev ? 'development' : 'production',
         entry: {
             app: isDev
                 ? [
@@ -160,11 +161,11 @@ module.exports = (env = {}) => {
             ),
             __DEV__: isDev,
         }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'vendors',
-            filename: 'vendors.client.js',
-            minChunks: Infinity,
-        }),
+        // new webpack.optimize.CommonsChunkPlugin({
+        //     name: 'vendors',
+        //     filename: 'vendors.client.js',
+        //     minChunks: Infinity,
+        // }),
         extractCSSTextPlugin,
         extractStylusTextPlugin,
     ];

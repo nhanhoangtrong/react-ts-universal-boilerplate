@@ -20,7 +20,7 @@ export default (app: Application, publicPath?: string) => {
         webpackDevMiddleware(webpackBundler, {
             // Dev middleware config
             publicPath,
-            noInfo: true,
+            logLevel: 'warn',
             stats: {
                 colors: true,
             },

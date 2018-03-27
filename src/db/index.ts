@@ -9,7 +9,9 @@ import TodoItemModel from './mongo/TodoItem';
 
 export let redisClient: redis.RedisClient;
 
-export const connectRedis = (cb: (err?: Error, client?: redis.RedisClient) => void) => {
+export const connectRedis = (
+    cb: (err?: Error, client?: redis.RedisClient) => void
+) => {
     redisClient = redis.createClient();
     redisClient.on('error', (err) => {
         cb(err);
@@ -19,10 +21,11 @@ export const connectRedis = (cb: (err?: Error, client?: redis.RedisClient) => vo
     });
 };
 
-export const connectMongoDB = (connectString: string, cb: (err?: Error) => void) => {
-    mongoose.connect(connectString, {
-        useMongoClient: true,
-    }, (err: Error) => {
+export const connectMongoDB = (
+    connectString: string,
+    cb: (err?: Error) => void
+) => {
+    mongoose.connect(connectString, (err: Error) => {
         if (err) {
             return cb(err);
         }

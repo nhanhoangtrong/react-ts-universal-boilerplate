@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { resolve, join } from 'path';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import * as winston from 'winston';
 import { mkdirSync, existsSync } from 'fs';
 
@@ -54,10 +54,13 @@ try {
     }
     process.exit(1);
 }
-app.engine('hbs', hbs.express4({
-    partialsDir: hbsViews.partialsDir,
-    layoutsDir: hbsViews.layoutsDir,
-}));
+app.engine(
+    'hbs',
+    hbs.express4({
+        partialsDir: hbsViews.partialsDir,
+        layoutsDir: hbsViews.layoutsDir,
+    })
+);
 app.set('host', process.env.HOST || 'localhost');
 app.set('port', parseInt(process.env.PORT, 10) || 3000);
 app.set('views', hbsViews.baseDir);
@@ -70,7 +73,10 @@ app.set('view engine', 'hbs');
 connectMongoDB(process.env.MONGODB_CONNECT_URI, (err: Error) => {
     if (err) {
         winston.error(err.message);
-        winston.info('%s - MongoDB connection error. Please make sure MongoDB is running.', chalk.red('Error'));
+        winston.info(
+            '%s - MongoDB connection error. Please make sure MongoDB is running.',
+            chalk.red('Error')
+        );
         process.exit(1);
     }
     winston.info('%s - MongoDB client is ready.', chalk.green('MongoDB'));
@@ -78,7 +84,10 @@ connectMongoDB(process.env.MONGODB_CONNECT_URI, (err: Error) => {
 connectRedis((err, redisClient) => {
     if (err) {
         console.error(err);
-        winston.info('%s - Please make sure Redis is running.', chalk.red('Redis connection error'));
+        winston.info(
+            '%s - Please make sure Redis is running.',
+            chalk.red('Redis connection error')
+        );
         process.exit(1);
     }
     winston.info('%s - Redis client is ready.', chalk.green('Redis'));
@@ -103,62 +112,87 @@ staticMiddleware(app, publicPath, join(__dirname, publicPath));
 // Register routes
 app.use('/auth', authRoute);
 app.use('/api', apiRoute);
-app.use('/graphql', bodyParser.text({
-    type: 'application/graphql',
-}), graphqlRoute);
+app.use(
+    '/graphql',
+    bodyParser.text({
+        type: 'application/graphql',
+    }),
+    graphqlRoute
+);
 if (isDev) {
     // Enable graphiql on development
-    app.use('/graphiql', graphiqlExpress({
-        endpointURL: '/graphql',
-    }));
-}
+    app.use(
+        '/graphiql',
+        graphiqlExpress({
+            endpointURL: '/graphql',
+        })
+    );
 
-/* tslint:disable:no-var-requires */
-if (!isDev) {
-    const serverRendering = require('./serverRendering').default;
-    serverRendering(app, publicPath);
-} else {
     app.get('*', (req, res, next) => {
         res.render('index', {
             title: 'Development Stage',
             publicPath,
         });
     });
+} else {
+    /* tslint:disable:no-var-requires */
+    const serverRendering = require('./serverRendering').default;
+    serverRendering(app, publicPath);
 }
 
 // Error logging handler
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-    if (!isDev) {
-        delete err.stack;
-    }
-    winston.error(err.message);
-    winston.error(err.stack);
+app.use(
+    (
+        err: Error,
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) => {
+        if (!isDev) {
+            delete err.stack;
+        }
+        winston.error(err.message);
+        winston.error(err.stack);
 
-    next(err);
-});
+        next(err);
+    }
+);
 // Default error handler status check
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use(
+    (
+        err: Error,
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) => {
+        // Check if error statusCode has been set or not
+        if (res.statusCode === 200) {
+            // If not, set default status is Internal Server Error
+            res.statusCode = 500;
+        }
 
-    // Check if error statusCode has been set or not
-    if (res.statusCode === 200) {
-        // If not, set default status is Internal Server Error
-        res.statusCode = 500;
-    }
-
-    return next(err);
-});
-// Default error handler
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-    // Check if headers is sent
-    if (res.headersSent) {
         return next(err);
     }
+);
+// Default error handler
+app.use(
+    (
+        err: Error,
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) => {
+        // Check if headers is sent
+        if (res.headersSent) {
+            return next(err);
+        }
 
-    // Check if AJAX request, send the json error
-    if (req.xhr) {
-        return res.json(err);
+        // Check if AJAX request, send the json error
+        if (req.xhr) {
+            return res.json(err);
+        }
+        return res.send(JSON.stringify(err));
     }
-    return res.send(JSON.stringify(err));
-});
+);
 
 export default app;

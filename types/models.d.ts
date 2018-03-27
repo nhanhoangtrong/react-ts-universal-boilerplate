@@ -1,5 +1,5 @@
 declare interface ITodoItem {
-    id?: string;
+    id?: any;
     text?: string;
     completed?: boolean;
     owner?: string;

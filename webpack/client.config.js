@@ -10,8 +10,7 @@ dotenv.config({
 });
 
 module.exports = (env = {}) => {
-    const isDev =
-        env.production === 'false' || process.env.NODE_ENV === 'development';
+    const isDev = process.env.NODE_ENV !== 'production';
     const publicPath = env.publicPath || process.env.PUBLIC_PATH || '/';
 
     const sourcePath = resolve(__dirname, '../src');
@@ -178,6 +177,7 @@ module.exports = (env = {}) => {
     } else {
         plugins.push(
             new UglifyJSPlugin({
+                sourceMap: true,
                 uglifyOptions: {
                     warnings: true,
                 },

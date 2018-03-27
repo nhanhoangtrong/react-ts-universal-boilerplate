@@ -9,12 +9,14 @@ dotenv.config({
 });
 
 module.exports = (env = {}) => {
-    const isDev = env || process.env.NODE_ENV === 'development';
+    const isDev = process.env.NODE_ENV !== 'production';
+    console.log(`Running Webpack Server with production = ${!isDev}`);
     const buildPath = resolve(__dirname, '../dist');
     const publicPath = env.publicPath || process.env.PUBLIC_PATH;
     return {
         name: 'server',
         target: 'node',
+        mode: isDev ? 'development' : 'production',
         context: resolve(__dirname, '../src'),
         devtool: 'source-map',
         entry: {

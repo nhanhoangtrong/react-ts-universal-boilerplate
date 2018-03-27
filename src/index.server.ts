@@ -20,10 +20,9 @@ server.listen(app.get('port'), app.get('host'));
 // Register listeners
 server.on('listening', () => {
     winston.info(
-        '%s - Server is listening on %s:%d',
-        chalk.green('Server'),
-        app.get('host'),
-        app.get('port')
+        `${chalk.green('Server')} - ${
+            process.env.NODE_ENV
+        } Server is listening on ${app.get('host')}:${app.get('port')}`
     );
 });
 

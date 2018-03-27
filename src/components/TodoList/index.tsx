@@ -20,12 +20,17 @@ export default class TodoList extends React.Component<TodoListProps> {
                 {this.props.todos.map((todo, i) => {
                     return <TodoItemContainer key={todo.id} todo={todo} />;
                 })}
-                <li><InputTodo onSave={this.handleAddTodo} placeholder="Input todo text" /></li>
+                <li>
+                    <InputTodo
+                        onSave={this.handleAddTodo}
+                        placeholder="Input todo text"
+                    />
+                </li>
             </ul>
         );
     }
 
     private handleAddTodo(text: string) {
-        this.props.addTodo({text});
+        this.props.addTodo({ text });
     }
 }

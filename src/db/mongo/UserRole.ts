@@ -16,7 +16,6 @@ const userRoleSchema = new Schema({
     description: String,
 });
 
-export interface UserRoleDocument extends IUserRole, mongoose.Document {
-}
+export interface UserRoleDocument extends IUserRole, mongoose.Document {}
 
 export default mongoose.model<UserRoleDocument>('UserRole', userRoleSchema);

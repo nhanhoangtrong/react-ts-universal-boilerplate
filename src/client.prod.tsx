@@ -8,4 +8,4 @@ import { createBrowserHistory } from 'history';
 const history = createBrowserHistory();
 const store = configureStore(history, window.__PRELOADEDSTATE__);
 
-render(<App store={store} history={history}/>, document.getElementById('app'));
+render(<App store={store} history={history} />, document.getElementById('app'));

@@ -6,19 +6,22 @@ const initialState: GlobalState = {
     isLoading: true,
 };
 
-export default (state: GlobalState = initialState, action: ReduxActions.Action<any>) => {
+export default (
+    state: GlobalState = initialState,
+    action: ReduxActions.Action<any>
+) => {
     switch (action.type) {
-    case ActionTypes.SET_FILTER:
-        return {
-            ...state,
-            filter: action.payload,
-        };
-    case ActionTypes.TOGGLE_LOADING:
-        return {
-            ...state,
-            isLoading: !state.isLoading,
-        };
-    default:
-        return state;
+        case ActionTypes.SET_FILTER:
+            return {
+                ...state,
+                filter: action.payload,
+            };
+        case ActionTypes.TOGGLE_LOADING:
+            return {
+                ...state,
+                isLoading: !state.isLoading,
+            };
+        default:
+            return state;
     }
 };

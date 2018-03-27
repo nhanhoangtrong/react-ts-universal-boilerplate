@@ -17,7 +17,9 @@ export interface MainAppContainerOwnProps {
     params?: any;
 }
 
-export type MainAppContainerProps = MainAppContainerStateProps & MainAppContainerDispatchProps & MainAppContainerOwnProps;
+export type MainAppContainerProps = MainAppContainerStateProps &
+    MainAppContainerDispatchProps &
+    MainAppContainerOwnProps;
 
 const mapStateToProps = (state: RootState) => ({
     isLoading: state.globals.isLoading,
@@ -27,4 +29,8 @@ const mapDispatchToProps = (dispatch: RootDispatch) => ({
     push: bindActionCreators(push, dispatch),
 });
 
-export default connect<MainAppContainerStateProps, MainAppContainerDispatchProps, null>(mapStateToProps, mapDispatchToProps)(MainApp);
+export default connect<
+    MainAppContainerStateProps,
+    MainAppContainerDispatchProps,
+    null
+>(mapStateToProps, mapDispatchToProps)(MainApp);

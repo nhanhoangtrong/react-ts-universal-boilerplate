@@ -7,10 +7,12 @@ export interface StatusProps {
 }
 
 export default ({ code, children }: StatusProps) => (
-    <Route render={ ({ staticContext }) => {
-        if (staticContext) {
-            staticContext.status = code;
-        }
-        return children;
-    }} />
+    <Route
+        render={({ staticContext }) => {
+            if (staticContext) {
+                staticContext.status = code;
+            }
+            return children;
+        }}
+    />
 );

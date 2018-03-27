@@ -8,10 +8,12 @@ export interface RedirectWithStatusProps {
 }
 
 export default ({ from, to, status }: RedirectWithStatusProps) => (
-    <Route render={ ({ staticContext }) => {
-        if (staticContext) {
-            staticContext.status = status;
-        }
-        return <Redirect from={from} to={to} />;
-    }} />
+    <Route
+        render={({ staticContext }) => {
+            if (staticContext) {
+                staticContext.status = status;
+            }
+            return <Redirect from={from} to={to} />;
+        }}
+    />
 );

@@ -30,91 +30,114 @@ export class BearerAuthenticationError extends Error {
     }
 }
 
-export const localStrategy = new passportLocal.Strategy({
-    usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback: true,
-}, (req, email, password, done) => {
-    const loginData = {
-        email: email.trim(),
-        password: password.trim(),
-    };
+export const localStrategy = new passportLocal.Strategy(
+    {
+        usernameField: 'email',
+        passwordField: 'password',
+        passReqToCallback: true,
+    },
+    (req, email, password, done) => {
+        const loginData = {
+            email: email.trim(),
+            password: password.trim(),
+        };
 
-    // Find a user by email address
-    User.findOne({ email }, (err: Error, user) => {
-        if (err) {
-            return done(err);
-        }
-
-        if (!user) {
-            const emailErr = new LocalAuthenticationError('Email address has not been registered yet.');
-            emailErr.fields = {
-                email: 'Email was not found.',
-            };
-            return done(emailErr);
-        }
-
-        return user.comparePassword(loginData.password, (compareErr, matched) => {
-            if (compareErr) {
-                return done(compareErr);
+        // Find a user by email address
+        User.findOne({ email }, (err: Error, user) => {
+            if (err) {
+                return done(err);
             }
 
-            if (!matched) {
-                const passwordErr = new LocalAuthenticationError('Password was not matched.');
-                passwordErr.fields = {
-                    password: 'Password mismatched.',
+            if (!user) {
+                const emailErr = new LocalAuthenticationError(
+                    'Email address has not been registered yet.'
+                );
+                emailErr.fields = {
+                    email: 'Email was not found.',
                 };
-                return done(passwordErr);
+                return done(emailErr);
             }
 
-            // If email and password matched, return the user
-            return jwt.sign({
-                sub: user._id,
-                name: user.fullName,
-                role: user.role,
-            }, jwtSecret, (signErr: Error, token: string) => {
-                if (signErr) {
-                    return done(signErr);
+            return user.comparePassword(
+                loginData.password,
+                (compareErr, matched) => {
+                    if (compareErr) {
+                        return done(compareErr);
+                    }
+
+                    if (!matched) {
+                        const passwordErr = new LocalAuthenticationError(
+                            'Password was not matched.'
+                        );
+                        passwordErr.fields = {
+                            password: 'Password mismatched.',
+                        };
+                        return done(passwordErr);
+                    }
+
+                    // If email and password matched, return the user
+                    return jwt.sign(
+                        {
+                            sub: user._id,
+                            name: user.fullName,
+                            role: user.role,
+                        },
+                        jwtSecret,
+                        (signErr: Error, token: string) => {
+                            if (signErr) {
+                                return done(signErr);
+                            }
+                            const userData = {
+                                _id: user._id,
+                                firstName: user.firstName,
+                                lastName: user.lastName,
+                                role: user.role,
+                                isAdmin: user.isAdmin,
+                                token,
+                            };
+                            return done(null, userData);
+                        }
+                    );
                 }
-                const userData = {
-                    _id: user._id,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    role: user.role,
-                    isAdmin: user.isAdmin,
-                    token,
-                };
-                return done(null, userData);
-            });
+            );
         });
-    });
-});
+    }
+);
 
-export const jwtSign = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+export const jwtSign = (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+) => {
     const user = req.user;
     if (!user) {
         // If user not found, throw error
-        return next(new LocalAuthenticationError('User has not been authenticated yet.'));
+        return next(
+            new LocalAuthenticationError('User has not been authenticated yet.')
+        );
     }
-    return jwt.sign({
-        sub: user._id,
-        name: `${user.firstName} ${user.lastName}`,
-        scope: `${user.role}`,
-        admin: user.isAdmin,
-    }, jwtSecret, (signErr: Error, token: string) => {
+    return jwt.sign(
+        {
+            sub: user._id,
+            name: `${user.firstName} ${user.lastName}`,
+            scope: `${user.role}`,
+            admin: user.isAdmin,
+        },
+        jwtSecret,
+        (signErr: Error, token: string) => {
+            // Check for JWT sign errors
+            if (signErr) {
+                return next(signErr);
+            }
 
-        // Check for JWT sign errors
-        if (signErr) {
-            return next(signErr);
+            // Re-assign req user value for next
+            req.user = {
+                token,
+            };
+
+            return next();
         }
-
-        // Re-assign req user value for next
-        req.user = {
-            token,
-        };
-
-        return next();
-    });
+    );
 };
 
 export const bearerStrategy = new passportBearer.Strategy((token, done) => {
@@ -124,7 +147,9 @@ export const bearerStrategy = new passportBearer.Strategy((token, done) => {
         }
 
         if (!user) {
-            const tokenError = new BearerAuthenticationError('Authentication token is not available.');
+            const tokenError = new BearerAuthenticationError(
+                'Authentication token is not available.'
+            );
             return done(tokenError);
         }
         return done(null, user);

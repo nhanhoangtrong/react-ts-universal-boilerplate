@@ -2,7 +2,7 @@ import * as React from 'react';
 // <reference path="./index.d.ts" />
 import * as classNames from 'classnames';
 import * as styles from './style.styl';
-import { ActionFunction1, Action } from "redux-actions";
+import { ActionFunction1, Action } from 'redux-actions';
 
 export interface InputTodoProps extends React.Props<any> {
     text?: string;
@@ -17,7 +17,10 @@ export interface InputTodoState extends React.ComponentState {
     text: string;
 }
 
-export default class InputTodo extends React.Component<InputTodoProps, InputTodoState> {
+export default class InputTodo extends React.Component<
+    InputTodoProps,
+    InputTodoState
+> {
     public constructor(props?: InputTodoProps, context?: any) {
         super(props, context);
         this.state = {
@@ -41,11 +44,15 @@ export default class InputTodo extends React.Component<InputTodoProps, InputTodo
                 type="text"
                 value={this.state.text}
                 onChange={this.handleTextChange}
-                onKeyUp={this.handleKeyUp} />
+                onKeyUp={this.handleKeyUp}
+            />
         );
     }
 
-    public componentWillReceiveProps(nextProps: Readonly<InputTodoProps>, nextContext: any) {
+    public componentWillReceiveProps(
+        nextProps: Readonly<InputTodoProps>,
+        nextContext: any
+    ) {
         if (nextProps.text) {
             this.setState({
                 text: nextProps.text,

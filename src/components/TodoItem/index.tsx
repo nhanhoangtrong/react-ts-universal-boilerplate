@@ -14,7 +14,10 @@ export interface TodoItemState extends React.ComponentState {
     deleting: boolean;
 }
 
-export default class TodoItem extends React.Component<TodoItemProps, TodoItemState> {
+export default class TodoItem extends React.Component<
+    TodoItemProps,
+    TodoItemState
+> {
     constructor(props?: TodoItemProps, context?: any) {
         super(props, context);
         this.state = {
@@ -41,13 +44,22 @@ export default class TodoItem extends React.Component<TodoItemProps, TodoItemSta
     public render() {
         const { todo } = this.props;
         return (
-            <Motion defaultStyle={{
-                ...this.state.startStyle,
-            }}
+            <Motion
+                defaultStyle={{
+                    ...this.state.startStyle,
+                }}
                 style={{
-                    width: spring(this.state.finalStyle.width, { stiffness: 220, damping: 40 }),
-                    height: spring(this.state.finalStyle.height, { stiffness: 220, damping: 40 }),
-                    opacity: spring(this.state.finalStyle.opacity, { stiffness: 150 }),
+                    width: spring(this.state.finalStyle.width, {
+                        stiffness: 220,
+                        damping: 40,
+                    }),
+                    height: spring(this.state.finalStyle.height, {
+                        stiffness: 220,
+                        damping: 40,
+                    }),
+                    opacity: spring(this.state.finalStyle.opacity, {
+                        stiffness: 150,
+                    }),
                 }}
                 onRest={() => {
                     if (this.state.deleting) {
@@ -55,25 +67,53 @@ export default class TodoItem extends React.Component<TodoItemProps, TodoItemSta
                     }
                 }}>
                 {(interpolatingStyle) => {
-                    return this.state.isEditing ?
-                        (<li className={styles.todoItem} style={interpolatingStyle}>
-                            <InputTodo text={todo.text} editing={true} onSave={this.handleEditSubmit} onCancel={this.handleEditCancel} focus={true} />
-                        </li>) :
-                        (<li className={styles.todoItem} style={{
-                            ...interpolatingStyle,
-                            display: interpolatingStyle.width < 20 ? 'none' : 'block',
-                        }}>
-                            { this.state.deleting ? null : (
+                    return this.state.isEditing ? (
+                        <li
+                            className={styles.todoItem}
+                            style={interpolatingStyle}>
+                            <InputTodo
+                                text={todo.text}
+                                editing={true}
+                                onSave={this.handleEditSubmit}
+                                onCancel={this.handleEditCancel}
+                                focus={true}
+                            />
+                        </li>
+                    ) : (
+                        <li
+                            className={styles.todoItem}
+                            style={{
+                                ...interpolatingStyle,
+                                display:
+                                    interpolatingStyle.width < 20
+                                        ? 'none'
+                                        : 'block',
+                            }}>
+                            {this.state.deleting ? null : (
                                 <div>
-                                    <input type="checkbox" checked={todo.completed} onChange={this.handleCheckChange} />
+                                    <input
+                                        type="checkbox"
+                                        checked={todo.completed}
+                                        onChange={this.handleCheckChange}
+                                    />
                                     &nbsp;
-                            {todo.text}
+                                    {todo.text}
                                     &nbsp;
-                                    {interpolatingStyle.width > 300 ? <button onClick={this.handleEditClick}>edit</button> : null}
-                                    {interpolatingStyle.width > 300 ? <button onClick={this.handleRemoveClick}>remove</button> : null}
+                                    {interpolatingStyle.width > 300 ? (
+                                        <button onClick={this.handleEditClick}>
+                                            edit
+                                        </button>
+                                    ) : null}
+                                    {interpolatingStyle.width > 300 ? (
+                                        <button
+                                            onClick={this.handleRemoveClick}>
+                                            remove
+                                        </button>
+                                    ) : null}
                                 </div>
                             )}
-                        </li>);
+                        </li>
+                    );
                 }}
             </Motion>
         );

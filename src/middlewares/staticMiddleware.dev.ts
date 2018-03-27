@@ -11,15 +11,19 @@ export default (app: Application, publicPath?: string) => {
         production: JSON.stringify(false),
     });
     const webpackBundler = webpack(webpackConfig);
-    app.use(webpackHotMiddleware(webpackBundler, {
-        // Hot middleware config
-    }));
-    app.use(webpackDevMiddleware(webpackBundler, {
-        // Dev middleware config
-        publicPath,
-        noInfo: true,
-        stats: {
-            colors: true,
-        },
-    }));
+    app.use(
+        webpackHotMiddleware(webpackBundler, {
+            // Hot middleware config
+        })
+    );
+    app.use(
+        webpackDevMiddleware(webpackBundler, {
+            // Dev middleware config
+            publicPath,
+            noInfo: true,
+            stats: {
+                colors: true,
+            },
+        })
+    );
 };

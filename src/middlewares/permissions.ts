@@ -1,6 +1,10 @@
 import * as express from 'express';
 import * as passport from 'passport';
-import { JsonWebTokenError, TokenExpiredError, NotBeforeError } from 'jsonwebtoken';
+import {
+    JsonWebTokenError,
+    TokenExpiredError,
+    NotBeforeError,
+} from 'jsonwebtoken';
 import { BearerAuthenticationError } from './passport';
 
 export class NotHavePermissionError extends Error {
@@ -14,10 +18,24 @@ export class NotHavePermissionError extends Error {
     }
 }
 
-export const checkPermissions: (requiredPermissions: string | string[]) => ((req: express.Request, res: express.Response, next: express.NextFunction) => void) = (requiredPermissions) => {
-    return (req: express.Request, res: express.Response, next: express.NextFunction) => {
+export const checkPermissions: (
+    requiredPermissions: string | string[]
+) => ((
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+) => void) = (requiredPermissions) => {
+    return (
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+    ) => {
         if (!req.user) {
-            return next(new BearerAuthenticationError('User must be authenticated before checking.'));
+            return next(
+                new BearerAuthenticationError(
+                    'User must be authenticated before checking.'
+                )
+            );
         }
 
         // Pre-format required permisisons
@@ -28,11 +46,17 @@ export const checkPermissions: (requiredPermissions: string | string[]) => ((req
         // After user has been checked, let's check the scope
         const scope = req.user.scope;
         if (!scope || typeof scope !== 'string') {
-            return next(new NotHavePermissionError('Permissions scope not available.'));
+            return next(
+                new NotHavePermissionError('Permissions scope not available.')
+            );
         }
         const scopePermissions = scope.trim().split(' ');
         if (!Array.isArray(scopePermissions)) {
-            return next(new NotHavePermissionError('Permissions must be an array or string'));
+            return next(
+                new NotHavePermissionError(
+                    'Permissions must be an array or string'
+                )
+            );
         }
 
         // Now check the permissions by intersection two sets
@@ -48,13 +72,25 @@ export const checkPermissions: (requiredPermissions: string | string[]) => ((req
     };
 };
 
-export const checkAdmin = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+export const checkAdmin = (
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+) => {
     if (!req.user) {
-        return next(new BearerAuthenticationError('User must be authenticated before checking.'));
+        return next(
+            new BearerAuthenticationError(
+                'User must be authenticated before checking.'
+            )
+        );
     }
 
     if (!req.user.admin) {
-        return next(new NotHavePermissionError('Administrator only, permissions denied.'));
+        return next(
+            new NotHavePermissionError(
+                'Administrator only, permissions denied.'
+            )
+        );
     }
 
     return next();

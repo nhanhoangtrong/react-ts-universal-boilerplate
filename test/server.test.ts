@@ -22,12 +22,15 @@ after((done) => {
 describe('This is a first test', () => {
     it('Expect return ok', (done) => {
         const isTrue = true;
-        expect(isTrue).to.be.a('boolean').and.equal(true);
+        expect(isTrue)
+            .to.be.a('boolean')
+            .and.equal(true);
         done();
     });
 
     it('Expect to get request from server', (done) => {
-        chai.request(server)
+        chai
+            .request(server)
             .get('/')
             .send({})
             .end((err, res) => {

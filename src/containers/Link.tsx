@@ -19,12 +19,18 @@ const mapDispatchToProps = (dispatch: RootDispatch) => ({
     pushTo: bindActionCreators(push, dispatch),
 });
 
-export default connect<null, LinkDispatchProps, LinkOwnProps>(null, mapDispatchToProps)(({ to, children, pushTo, ...props }: LinkProps) => {
+export default connect<null, LinkDispatchProps, LinkOwnProps>(
+    null,
+    mapDispatchToProps
+)(({ to, children, pushTo, ...props }: LinkProps) => {
     return (
-        <a href={to} onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-            e.preventDefault();
-            pushTo(to);
-        }} {...props}>
+        <a
+            href={to}
+            onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                e.preventDefault();
+                pushTo(to);
+            }}
+            {...props}>
             {children}
         </a>
     );

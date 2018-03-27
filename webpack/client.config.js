@@ -10,7 +10,8 @@ dotenv.config({
 });
 
 module.exports = (env = {}) => {
-    const isDev = env.production === 'false' || process.env.NODE_ENV === 'development';
+    const isDev =
+        env.production === 'false' || process.env.NODE_ENV === 'development';
     const publicPath = env.publicPath || process.env.PUBLIC_PATH || '/';
 
     const sourcePath = resolve(__dirname, '../src');
@@ -29,12 +30,14 @@ module.exports = (env = {}) => {
 
     const defaultConfig = {
         entry: {
-            app: isDev ? [
-                'react-hot-loader/patch',
-                'webpack/hot/dev-server',
-                'webpack-hot-middleware/client?reload=true&noInfo=true',
-                './index.client.ts',
-            ] : './index.client.ts',
+            app: isDev
+                ? [
+                      'react-hot-loader/patch',
+                      'webpack/hot/dev-server',
+                      'webpack-hot-middleware/client?reload=true&noInfo=true',
+                      './index.client.ts',
+                  ]
+                : './index.client.ts',
             vendors: [
                 'react',
                 'react-dom',
@@ -47,12 +50,8 @@ module.exports = (env = {}) => {
         context: sourcePath,
         target: 'web',
         resolve: {
-            modules: [ 'node_modules' ],
-            extensions: [
-                '.ts', '.tsx',
-                '.js', '.jsx',
-                '.json',
-            ],
+            modules: ['node_modules'],
+            extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
         },
         output: {
             path: join(buildPath, publicPath),
@@ -63,38 +62,48 @@ module.exports = (env = {}) => {
             rules: [
                 {
                     test: /\.tsx?$/,
-                    use: isDev ? [
-                        'react-hot-loader/webpack',
-                        {
-                            loader: 'awesome-typescript-loader',
-                            options: {
-                                module: 'es6',
-                            },
-                        },
-                    ] : [{
-                        loader: 'awesome-typescript-loader',
-                        options: {
-                            module: 'es6',
-                        },
-                    }],
+                    use: isDev
+                        ? [
+                              {
+                                  loader: 'babel-loader',
+                                  options: {
+                                      babelrc: true,
+                                      plugins: ['react-hot-loader/babel'],
+                                  },
+                              },
+                              {
+                                  loader: 'awesome-typescript-loader',
+                                  options: {
+                                      module: 'es6',
+                                  },
+                              },
+                          ]
+                        : [
+                              {
+                                  loader: 'awesome-typescript-loader',
+                                  options: {
+                                      module: 'es6',
+                                  },
+                              },
+                          ],
                 },
                 {
                     enforce: 'pre',
                     test: /\.tsx?$/,
-                    use: [{
-                        loader: 'tslint-loader',
-                        options: {
-                            emitErrors: true,
+                    use: [
+                        {
+                            loader: 'tslint-loader',
+                            options: {
+                                emitErrors: true,
+                            },
                         },
-                    }],
+                    ],
                 },
                 {
                     enforce: 'pre',
                     test: /\.js$/,
-                    use: [ 'source-map-loader' ],
-                    exclude: [
-                        /node_modules/,
-                    ],
+                    use: ['source-map-loader'],
+                    exclude: [/node_modules/],
                 },
                 {
                     test: /\.styl$/,
@@ -131,12 +140,14 @@ module.exports = (env = {}) => {
                 },
                 {
                     test: /\.(jpe?g|png|svg|gif|eot|ttf|woff|woff2)$/,
-                    use: [{
-                        loader: 'file-loader',
-                        options: {
-                            name: '[path][name].[ext]',
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: '[path][name].[ext]',
+                            },
                         },
-                    }],
+                    ],
                 },
             ],
         },
@@ -144,7 +155,9 @@ module.exports = (env = {}) => {
 
     const plugins = [
         new webpack.DefinePlugin({
-            "process.env.NODE_ENV": JSON.stringify(isDev ? 'development' : 'production'),
+            'process.env.NODE_ENV': JSON.stringify(
+                isDev ? 'development' : 'production'
+            ),
             __DEV__: isDev,
         }),
         new webpack.optimize.CommonsChunkPlugin({
@@ -159,7 +172,7 @@ module.exports = (env = {}) => {
     if (isDev) {
         plugins.push(
             new webpack.HotModuleReplacementPlugin(),
-            new webpack.NamedModulesPlugin(),
+            new webpack.NamedModulesPlugin()
         );
     } else {
         plugins.push(
@@ -167,8 +180,7 @@ module.exports = (env = {}) => {
                 uglifyOptions: {
                     warnings: true,
                 },
-            }),
-
+            })
         );
     }
 

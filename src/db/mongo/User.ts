@@ -3,43 +3,49 @@ import * as bcrypt from 'bcrypt';
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-    firstName: {
-        type: String,
-        required: true,
+const userSchema = new Schema(
+    {
+        firstName: {
+            type: String,
+            required: true,
+        },
+        lastName: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        password: {
+            type: String,
+            default: '',
+        },
+        isAdmin: {
+            type: Boolean,
+            default: false,
+        },
+        role: {
+            type: String,
+            default: 'guest', // Admin, Moderator, Author, Guest
+            index: true,
+        },
     },
-    lastName: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    password: {
-        type: String,
-        default: '',
-    },
-    isAdmin: {
-        type: Boolean,
-        default: false,
-    },
-    role: {
-        type: String,
-        default: 'guest', // Admin, Moderator, Author, Guest
-        index: true,
-    },
-}, {
-    timestamps: true,
-});
+    {
+        timestamps: true,
+    }
+);
 
 export interface UserDocument extends IUser, mongoose.Document {
     email: string;
     password: string;
     role: string;
     isAdmin: boolean;
-    comparePassword?: (candidatePassword: string, cb: (err: Error, matched: boolean) => void) => void;
+    comparePassword?: (
+        candidatePassword: string,
+        cb: (err: Error, matched: boolean) => void
+    ) => void;
 }
 
 /**
@@ -68,7 +74,10 @@ userSchema.pre('save', function(next) {
 /**
  * Comparing user's candidate password with user's password
  */
-userSchema.methods.comparePassword = function(candidatePassword: string, cb: (err: Error, matched: boolean) => void) {
+userSchema.methods.comparePassword = function(
+    candidatePassword: string,
+    cb: (err: Error, matched: boolean) => void
+) {
     bcrypt.compare(candidatePassword, this.password, cb);
 };
 

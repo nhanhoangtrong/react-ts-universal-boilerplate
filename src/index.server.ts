@@ -1,7 +1,7 @@
 import { createServer } from 'http';
 import { resolve } from 'path';
 import * as dotenv from 'dotenv';
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import * as winston from 'winston';
 import 'isomorphic-fetch';
 
@@ -19,7 +19,12 @@ server.listen(app.get('port'), app.get('host'));
 
 // Register listeners
 server.on('listening', () => {
-    winston.info('%s - Server is listening on %s:%d', chalk.green('Server'), app.get('host'), app.get('port'));
+    winston.info(
+        '%s - Server is listening on %s:%d',
+        chalk.green('Server'),
+        app.get('host'),
+        app.get('port')
+    );
 });
 
 server.on('error', (err) => {

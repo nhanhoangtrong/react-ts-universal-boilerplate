@@ -18,7 +18,8 @@ export interface TodoAppContainerDispatchProps extends React.Props<any> {
     todosActions: any;
 }
 
-export type TodoAppContainerProps = TodoAppContainerStateProps & TodoAppContainerDispatchProps;
+export type TodoAppContainerProps = TodoAppContainerStateProps &
+    TodoAppContainerDispatchProps;
 
 const mapStateToProps = (state: RootState) => {
     const filter = state.globals.filter;
@@ -37,4 +38,8 @@ const mapDispatchToProps = (dispatch: RootDispatch) => ({
     todosActions: bindActionCreators(TodosActions as any, dispatch),
 });
 
-export default connect<TodoAppContainerStateProps, TodoAppContainerDispatchProps, {}>(mapStateToProps, mapDispatchToProps)(TodoApp);
+export default connect<
+    TodoAppContainerStateProps,
+    TodoAppContainerDispatchProps,
+    {}
+>(mapStateToProps, mapDispatchToProps)(TodoApp);

@@ -11,8 +11,10 @@ const store = configureStore(history);
 const renderDOM = (AppComponent: AppRootComponent) => {
     render(
         <AppContainer>
-            <AppComponent store={store} history={history}/>
-        </AppContainer>, document.getElementById('app'));
+            <AppComponent store={store} history={history} />
+        </AppContainer>,
+        document.getElementById('app')
+    );
 };
 
 renderDOM(App);

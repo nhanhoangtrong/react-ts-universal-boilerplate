@@ -62,7 +62,11 @@ declare module '*.woff2' {
 }
 
 // Global setInterval for web
-declare function setInterval(callback: (...args: any[]) => void, ms: number, ...args: any[]): number;
+declare function setInterval(
+    callback: (...args: any[]) => void,
+    ms: number,
+    ...args: any[]
+): number;
 
 // Global Webpack constant
 declare const __DEV__: boolean;
@@ -74,7 +78,11 @@ declare interface Window {
 }
 
 declare module 'express-status-monitor' {
-    const middlewares: () => (req: Express.Request, res: Express.Response, next: (err?: any) => void) => void;
+    const middlewares: () => (
+        req: Express.Request,
+        res: Express.Response,
+        next: (err?: any) => void
+    ) => void;
     export = middlewares;
 }
 

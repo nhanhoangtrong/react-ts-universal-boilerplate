@@ -11,11 +11,13 @@ const preloadedState: RootState = {
     globals: {
         isLoading: false,
     },
-    todos: [{
-        id: 'abc',
-        text: 'Default Todo From Server',
-        completed: false,
-    }],
+    todos: [
+        {
+            id: 'abc',
+            text: 'Default Todo From Server',
+            completed: false,
+        },
+    ],
 };
 
 export default (app: Application, publicPath: string) => {
@@ -27,22 +29,20 @@ export default (app: Application, publicPath: string) => {
         const store = configureStore(memoryHistory, preloadedState);
         const appHTML = renderToString(
             <Provider store={store}>
-                <StaticRouter
-                    location={req.url}
-                    context={context}>
+                <StaticRouter location={req.url} context={context}>
                     <Home />
                 </StaticRouter>
-            </Provider>,
+            </Provider>
         );
         res.render('index', {
             title: 'Server-side rendering',
             publicPath,
             appHTML,
-            cssFiles: [
-                'style',
-            ],
+            cssFiles: ['style'],
             // Replace '<' by equivalent Unicode for prevent script attacks
-            preloadedState: preloadedState ? JSON.stringify(preloadedState).replace(/</g, '\\u003c') : null,
+            preloadedState: preloadedState
+                ? JSON.stringify(preloadedState).replace(/</g, '\\u003c')
+                : null,
         });
     });
 };

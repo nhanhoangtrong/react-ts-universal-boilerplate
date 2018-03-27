@@ -25,8 +25,17 @@ export default class TodoApp extends React.Component<TodoAppProps> {
         const { match } = this.props;
         return (
             <div className={styles.todoApp}>
-                <h1>Hello, filter is {this.props.filter} and isLoading is {this.props.isLoading ? 'true' : 'false'}! <button onClick={this.props.globalsActions.waitLoading}>toggle</button></h1>
-                <TodoList todos={this.props.todos} addTodo={this.props.todosActions.addTodo}/>
+                <h1>
+                    Hello, filter is {this.props.filter} and isLoading is{' '}
+                    {this.props.isLoading ? 'true' : 'false'}!{' '}
+                    <button onClick={this.props.globalsActions.waitLoading}>
+                        toggle
+                    </button>
+                </h1>
+                <TodoList
+                    todos={this.props.todos}
+                    addTodo={this.props.todosActions.addTodo}
+                />
                 <LoadingIndicator visible={this.props.isLoading} />
                 <NavBar />
             </div>

@@ -17,7 +17,10 @@ const transitionStyles = {
     entered: { opacity: 1 },
 };
 
-export default class LoadingIndicator extends React.Component<LoadingIndicatorProps, any> {
+export default class LoadingIndicator extends React.Component<
+    LoadingIndicatorProps,
+    any
+> {
     constructor(props?: LoadingIndicatorProps, context?: any) {
         super(props, context);
         this.state = {
@@ -29,7 +32,11 @@ export default class LoadingIndicator extends React.Component<LoadingIndicatorPr
 
     public render() {
         return (
-            <Transition in={this.state.in && this.props.visible} timeout={500} onEntered={this.onTransitionEntered} onExited={this.onTransitionExited}>
+            <Transition
+                in={this.state.in && this.props.visible}
+                timeout={500}
+                onEntered={this.onTransitionEntered}
+                onExited={this.onTransitionExited}>
                 {(state: 'entered' | 'entering') => (
                     <div
                         style={{

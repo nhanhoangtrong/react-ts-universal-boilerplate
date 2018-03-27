@@ -6,16 +6,26 @@ import { editTodo, completeTodo, deleteTodo } from '../redux/actions/todos';
 import { RootState } from '../redux';
 
 export interface TodoItemContainerDispatchProps extends React.Props<any> {
-    completeTodo: ReduxActions.ActionFunction1<string, ReduxActions.Action<string>>;
-    deleteTodo: ReduxActions.ActionFunction1<string, ReduxActions.Action<string>>;
-    editTodo: ReduxActions.ActionFunction1<ITodoItem, ReduxActions.Action<ITodoItem>>;
+    completeTodo: ReduxActions.ActionFunction1<
+        string,
+        ReduxActions.Action<string>
+    >;
+    deleteTodo: ReduxActions.ActionFunction1<
+        string,
+        ReduxActions.Action<string>
+    >;
+    editTodo: ReduxActions.ActionFunction1<
+        ITodoItem,
+        ReduxActions.Action<ITodoItem>
+    >;
 }
 
 export interface TodoItemContainerOwnProps extends React.Props<any> {
     todo: ITodoItem;
 }
 
-export type TodoItemContainerProps = TodoItemContainerOwnProps & TodoItemContainerDispatchProps;
+export type TodoItemContainerProps = TodoItemContainerOwnProps &
+    TodoItemContainerDispatchProps;
 
 const mapDispatchToProps = (dispatch: Dispatch<RootState>) => ({
     completeTodo: bindActionCreators(completeTodo, dispatch),
@@ -23,4 +33,8 @@ const mapDispatchToProps = (dispatch: Dispatch<RootState>) => ({
     editTodo: bindActionCreators(editTodo, dispatch),
 });
 
-export default connect<null, TodoItemContainerDispatchProps, TodoItemContainerOwnProps>(null, mapDispatchToProps)(TodoItem);
+export default connect<
+    null,
+    TodoItemContainerDispatchProps,
+    TodoItemContainerOwnProps
+>(null, mapDispatchToProps)(TodoItem);

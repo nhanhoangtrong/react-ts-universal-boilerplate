@@ -22,16 +22,14 @@ module.exports = (env = {}) => {
         },
         resolve: {
             modules: ['node_modules'],
-            extensions: [
-                '.ts', '.tsx',
-                '.js', '.jsx',
-                '.json',
-            ],
+            extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
         },
-        externals: [nodeExternals({
-            // Load non-javascript files with extensions, presumably via loaders
-            whitelist: [/\.(?!(?:jsx?|tsx?|json)$).{1,5}$/i],
-        })],
+        externals: [
+            nodeExternals({
+                // Load non-javascript files with extensions, presumably via loaders
+                whitelist: [/\.(?!(?:jsx?|tsx?|json)$).{1,5}$/i],
+            }),
+        ],
         output: {
             path: join(buildPath, publicPath),
             filename: '../[name].js',
@@ -51,30 +49,32 @@ module.exports = (env = {}) => {
             rules: [
                 {
                     test: /\.tsx?$/,
-                    use: [{
-                        loader: 'awesome-typescript-loader',
-                        options: {
-                            module: 'es6',
+                    use: [
+                        {
+                            loader: 'awesome-typescript-loader',
+                            options: {
+                                module: 'es6',
+                            },
                         },
-                    }],
+                    ],
                 },
                 {
                     enforce: 'pre',
                     test: /\.tsx?$/,
-                    use: [{
-                        loader: 'tslint-loader',
-                        options: {
-                            emitErrors: true,
+                    use: [
+                        {
+                            loader: 'tslint-loader',
+                            options: {
+                                emitErrors: true,
+                            },
                         },
-                    }],
+                    ],
                 },
                 {
                     enforce: 'pre',
                     test: /\.js$/,
                     use: ['source-map-loader'],
-                    exclude: [
-                        /node_modules/,
-                    ],
+                    exclude: [/node_modules/],
                 },
                 {
                     test: /\.styl$/,
@@ -95,20 +95,24 @@ module.exports = (env = {}) => {
                 },
                 {
                     test: /\.(jpe?g|png|svg|gif|eot|ttf|woff|woff2)$/,
-                    use: [{
-                        loader: 'file-loader',
-                        options: {
-                            name: '[path][name].[ext]',
-                            emitFile: false,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: '[path][name].[ext]',
+                                emitFile: false,
+                            },
                         },
-                    }],
+                    ],
                 },
             ],
         },
         plugins: [
             new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
             new webpack.DefinePlugin({
-                'process.env.NODE_ENV': JSON.stringify(isDev ? 'development' : 'production'),
+                'process.env.NODE_ENV': JSON.stringify(
+                    isDev ? 'development' : 'production'
+                ),
                 __DEV__: isDev,
             }),
             new CopyPlugin([

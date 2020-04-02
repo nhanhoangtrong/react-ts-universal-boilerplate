@@ -46,7 +46,7 @@
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-redux": "^5.0.0-alpha.6",
-    "react-transition-group": "^2.2.0",
+    "react-transition-group": "^2.9.0",
     "redis": "^2.8.0",
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",

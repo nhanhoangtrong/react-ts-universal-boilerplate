@@ -28,7 +28,7 @@
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
     "express": "^4.15.4",
-    "express-hbs": "^1.0.4",
+    "express-hbs": "^2.3.2",
     "express-status-monitor": "^1.0.0",
     "history": "^4.7.2",
     "isomorphic-fetch": "^2.2.1",

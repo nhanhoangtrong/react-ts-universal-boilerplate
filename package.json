@@ -22,7 +22,7 @@
       "mocha -r ts-node/register -r ignore-styles -r jsdom-global/register test/*.ts"
   },
   "dependencies": {
-    "bcrypt": "^1.0.3",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.18.2",
     "classnames": "^2.2.5",
     "cors": "^2.8.4",
